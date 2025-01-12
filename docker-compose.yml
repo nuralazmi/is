@@ -7,67 +7,32 @@ services:
     ports:
       - "8005:80"
     volumes:
-      - ./docker/nginx/laravel.conf:/etc/nginx/conf.d/default.conf
-      - ./laravel-case:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./case:/var/www/html
     depends_on:
-      - php-laravel
+      - php
 
-  nginx-symfony:
-    container_name: nginx-symfony
-    image: nginx:latest
-    ports:
-      - "8006:80"
-    volumes:
-      - ./docker/nginx/symfony.conf:/etc/nginx/conf.d/default.conf
-      - ./case/symfony:/var/www/html
-    depends_on:
-      - php-symfony
-
-  php-laravel:
-    container_name: php-laravel
+  php:
+    container_name: php
     build:
       context: ./docker/php
     volumes:
-      - ./laravel-case:/var/www/html
-    entrypoint: ["sh", "/var/www/html/entrypoint.sh"]
+      - ./case:/var/www/html
     depends_on:
-      - mysql-laravel
+      - mysql
 
-  php-symfony:
-    container_name: php-symfony
-    build:
-      context: ./docker/php
-    volumes:
-      - ./case/symfony:/var/www/html
-    entrypoint: ["sh", "/var/www/html/entrypoint.sh"]
-    depends_on:
-      - mysql-symfony
-
-  mysql-laravel:
-    container_name: mysql-laravel
+  mysql:
+    container_name: mysql
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: is_case_laravel
-      MYSQL_DATABASE: is_case_laravel
-      MYSQL_USER: is_case_laravel
-      MYSQL_PASSWORD: is_case_laravel
+      MYSQL_ROOT_PASSWORD: is_case
+      MYSQL_DATABASE: is_case
+      MYSQL_USER: is_case
+      MYSQL_PASSWORD: is_case
     volumes:
-      - ./docker/mysql/laravel_example.sql:/docker-entrypoint-initdb.d/example.sql
+      - ./docker/mysql/example.sql:/docker-entrypoint-initdb.d/example.sql
     ports:
       - "3309:3306"
-
-  mysql-symfony:
-    container_name: mysql-symfony
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: is_case_symfony
-      MYSQL_DATABASE: is_case_symfony
-      MYSQL_USER: is_case_symfony
-      MYSQL_PASSWORD: is_case_symfony
-    volumes:
-      - ./docker/mysql/symfony_example.sql:/docker-entrypoint-initdb.d/example.sql
-    ports:
-      - "3310:3306"
 
   redis:
     container_name: redis
