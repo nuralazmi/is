@@ -2,10 +2,19 @@
 
 namespace App\Observers;
 
+use App\Http\Services\Discounts\DiscountService;
 use App\Models\OrderItem;
 
 class OrderItemObserver
 {
+
+    protected DiscountService $discount_service;
+
+    public function __construct(DiscountService $discount_service)
+    {
+        $this->discount_service = $discount_service;
+    }
+
     /**
      * @param OrderItem $order_item
      * @return void
@@ -27,6 +36,9 @@ class OrderItemObserver
         $subtotal = $order->items->sum(function ($item) {
             return $item->total;
         });
+
+//        $discount_calculate = $this->discount_service->calculate($order);
+//        $discount = $discount_calculate['totalDiscount'];
         $discount = $order->discount ?? 0;
         $total = $subtotal - $discount;
         $order->subtotal = $subtotal;

@@ -26,6 +26,7 @@ class OrderController extends Controller
 
     /**
      * @return JsonResponse
+     * @unauthenticated
      */
     public function index(): JsonResponse
     {

@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx-laravel:
-    container_name: nginx-laravel
+    container_name: nginx
     image: nginx:latest
     ports:
       - "8005:80"
@@ -18,6 +18,7 @@ services:
       context: ./docker/php
     volumes:
       - ./case:/var/www/html
+    entrypoint: ["sh", "/var/www/html/entrypoint.sh"]
     depends_on:
       - mysql
 
