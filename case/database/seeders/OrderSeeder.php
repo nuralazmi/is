@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
@@ -34,5 +35,7 @@ class OrderSeeder extends Seeder
                 ]);
             }
         }
+
+        Product::query()->update(['stock' => 10]);
     }
 }

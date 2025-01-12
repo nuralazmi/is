@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Repositories\ProductRepository;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Arr;
 
 class OrderProductStockControl implements Rule
 {
@@ -22,13 +23,12 @@ class OrderProductStockControl implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $this->attribute = $attribute;
-        $attributeParts = explode('.', $attribute);
-        $index = $attributeParts[1] ?? null;
-
+        $item = Arr::first($this->items, fn($item) => $item['product_id'] === $value);
         $product_repository = app(ProductRepository::class);
-        $product = $product_repository->getById(request()->input("items.$index.product_id"));
-        return $product && $product->stock > $value;
+        $product = $product_repository->getById($value);
+        $this->attribute = $attribute;
+
+        return $product && $product->stock >= $item['quantity'];
     }
 
     /**

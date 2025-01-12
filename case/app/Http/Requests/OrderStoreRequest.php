@@ -27,8 +27,8 @@ class OrderStoreRequest extends FormRequest
     {
         return [
             'items' => ['required', 'array', new OrderUniqueItems()],
-            'items.*.product_id' => 'bail|required|exists:products,id',
-            'items.*.quantity' => ['bail', 'required', 'integer', 'min:1', new OrderProductStockControl()],
+            'items.*.product_id' => ['bail', 'required', 'exists:products,id', new OrderProductStockControl()],
+            'items.*.quantity' => 'bail|required|integer|min:1',
         ];
     }
 
