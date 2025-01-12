@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\SetLocale;
 use App\Http\Controllers\DiscountController;
+use App\Http\Middleware\CacheResponse;
 
 Route::middleware(SetLocale::class)->group(function () {
     Route::group(['prefix' => 'auth'], function () {
@@ -15,8 +16,10 @@ Route::middleware(SetLocale::class)->group(function () {
         Route::resource('orders', OrderController::class)->only(['store', 'destroy']);
     });
 
-    Route::resource('orders', OrderController::class)->only(['index']);
-    Route::get('discount-calculate/{order}', [DiscountController::class, 'calculate'])->name('discount-calculate');
+    Route::middleware(CacheResponse::class)->group(function () {
+        Route::resource('orders', OrderController::class)->only(['index']);
+        Route::get('discount-calculate/{order}', [DiscountController::class, 'calculate'])->name('discount-calculate');
+    });
 });
 
 
