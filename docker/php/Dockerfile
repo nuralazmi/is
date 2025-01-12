@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     curl \
+    supervisor \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && pecl install redis \
@@ -26,7 +27,5 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 COPY . /var/www/html
-
-CMD ["php-fpm"]
 
 EXPOSE 9000

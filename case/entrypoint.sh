@@ -1,3 +1,4 @@
+cp supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 if [ ! -f /var/www/html/.env ]; then
   cp /var/www/html/.env.example /var/www/html/.env
@@ -18,4 +19,5 @@ if ! php artisan db:seed; then
   exit 1
 fi
 
-exec php-fpm
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+

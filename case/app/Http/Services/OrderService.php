@@ -2,10 +2,10 @@
 
 namespace App\Http\Services;
 
+use App\Jobs\SendEmailJob;
 use App\Models\Order;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class OrderService
@@ -36,6 +36,7 @@ class OrderService
         $order = $this->order_repository->create(['user_id' => auth()->user()->id]);
         $order->items()->createMany($payload['items']);
 
+        SendEmailJob::dispatch();
         return response()->json([
             'message' => trans('response.created'),
         ], ResponseAlias::HTTP_CREATED);
