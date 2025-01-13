@@ -38,7 +38,8 @@ class CacheResponse
         $sep = '_';
         $cache_key = $prefix . $sep . $request->route()->getActionMethod();
         $param = $request->route(Arr::first($request->route()->parameterNames()));
-        if (is_string($param) || is_numeric($param)) $cache_key = $cache_key . $sep . $param;
+        if (is_string($param) || is_numeric($param) || is_object($param))
+            $cache_key = $cache_key . $sep . (is_object($param) ? $param->id : $param);
 
         if ($prefix === 'filter') {
             $cache_key = $prefix . $sep . md5($request->getRequestUri());

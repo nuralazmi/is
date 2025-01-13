@@ -7,6 +7,8 @@ use App\Models\Order;
 
 class TwoOrMoreItemsCategoryOneDiscount implements DiscountRule
 {
+    private int $category_id = 2;
+
     /**
      * @return string
      */
@@ -16,17 +18,25 @@ class TwoOrMoreItemsCategoryOneDiscount implements DiscountRule
     }
 
     /**
+     * @return string
+     */
+    public function getTranslatedName(): string
+    {
+        return trans('discount.' . $this->getName(), ['category_id' => $this->category_id]);
+    }
+
+
+    /**
      * @param Order $order
      * @param float $current_sub_total
      * @return array|null
      */
     public function calculate(Order $order, float $current_sub_total): ?array
     {
-        $category_id = 1;
         $items_in_category = [];
 
         foreach ($order->items as $item) {
-            if ($item->product->category_id == $category_id) {
+            if ($item->product->category_id == $this->category_id) {
                 $items_in_category[] = $item;
             }
         }
@@ -38,6 +48,7 @@ class TwoOrMoreItemsCategoryOneDiscount implements DiscountRule
             $newSubtotal = $current_sub_total - $discount;
             return [
                 'discountReason' => '20_PERCENT_ON_CHEAPEST_ITEM',
+                'discountName' => $this->getTranslatedName(),
                 'discountAmount' => round($discount, 2),
                 'subtotal' => round($newSubtotal, 2),
             ];

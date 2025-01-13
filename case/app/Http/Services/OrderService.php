@@ -39,6 +39,7 @@ class OrderService
         SendEmailJob::dispatch();
         return response()->json([
             'message' => trans('response.created'),
+            'id' => $order->id,
         ], ResponseAlias::HTTP_CREATED);
     }
 

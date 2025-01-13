@@ -12,6 +12,11 @@ interface DiscountRule
     public function getName(): string;
 
     /**
+     * @return string
+     */
+    public function getTranslatedName(): string;
+
+    /**
      * @param Order $order
      * @param float $current_sub_total
      * @return array|null

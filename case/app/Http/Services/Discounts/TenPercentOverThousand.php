@@ -16,6 +16,14 @@ class TenPercentOverThousand implements DiscountRule
     }
 
     /**
+     * @return string
+     */
+    public function getTranslatedName(): string
+    {
+        return trans('discount.'.$this->getName());
+    }
+
+    /**
      * @param Order $order
      * @param float $current_sub_total
      * @return array|null
@@ -26,6 +34,7 @@ class TenPercentOverThousand implements DiscountRule
             $discount = floor($order->total * 0.10 * 100) / 100;
             return [
                 'discountReason' => $this->getName(),
+                'discountName' => $this->getTranslatedName(),
                 'discountAmount' => round($discount, 2),
                 'subtotal' => round($current_sub_total - $discount, 2),
             ];

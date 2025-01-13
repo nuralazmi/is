@@ -16,10 +16,10 @@ Route::middleware(SetLocale::class)->group(function () {
         Route::resource('orders', OrderController::class)->only(['store', 'destroy']);
     });
 
-    Route::middleware(CacheResponse::class)->group(function () {
-        Route::resource('orders', OrderController::class)->only(['index']);
-        Route::get('discount-calculate/{order}', [DiscountController::class, 'calculate'])->name('discount-calculate');
-    });
+    Route::resource('orders', OrderController::class)->only(['index']);
+    Route::get('discount-calculate/{order}', [DiscountController::class, 'calculate'])
+        ->name('discount-calculate')
+        ->middleware(CacheResponse::class);
 });
 
 

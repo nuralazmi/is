@@ -1,5 +1,7 @@
 cp supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+composer install
+
 if [ ! -f /var/www/html/.env ]; then
   cp /var/www/html/.env.example /var/www/html/.env
 fi

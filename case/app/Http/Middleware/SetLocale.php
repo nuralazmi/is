@@ -16,17 +16,10 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $accept_language = $request->header('Accept-Language');
-
-        if ($accept_language && in_array($accept_language, config('app.supported_locales'))) {
-            App::setLocale($accept_language);
-            config()->set('language.id', App::getLocale() === \App\Enums\LanguagesEnum::TR->value ? \App\Enums\LanguageIdEnum::TR->value : \App\Enums\LanguageIdEnum::EN->value);
-        } else {
-            $user = auth()->user();
-            if ($user) App::setLocale($user->language_id);
-
-            App::setLocale(\App\Enums\LanguagesEnum::TR->value);
-        }
+        $header_language = $request->header('Accept-Language');
+        $accept_language = $header_language && in_array($header_language, config('app.supported_locales')) ? $header_language :  \App\Enums\LanguagesEnum::TR->value;
+        App::setLocale($accept_language);
+        config()->set('language.id', App::getLocale() === \App\Enums\LanguagesEnum::TR->value ? \App\Enums\LanguageIdEnum::TR->value : \App\Enums\LanguageIdEnum::EN->value);
 
         return $next($request);
     }
