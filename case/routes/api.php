@@ -10,6 +10,9 @@ use App\Http\Middleware\CacheResponse;
 Route::middleware(SetLocale::class)->group(function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', [AuthController::class, 'login'])->name('login');
+        Route::get('me', [AuthController::class, 'me'])
+            ->name('me')
+            ->middleware('auth:sanctum');
     });
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');

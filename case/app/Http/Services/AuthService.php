@@ -38,4 +38,13 @@ class AuthService
         return response()->json(['ok' => true]);
     }
 
+    /**
+     * @return JsonResponse
+     */
+    public function me(): JsonResponse
+    {
+        $user = auth()->user();
+        return response()->json(['user' => $user]);
+    }
+
 }

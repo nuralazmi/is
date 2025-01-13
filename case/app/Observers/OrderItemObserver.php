@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Http\Services\Discounts\DiscountService;
+use App\Jobs\UserRevenueUpdateJob;
 use App\Models\OrderItem;
 
 class OrderItemObserver
@@ -43,12 +44,10 @@ class OrderItemObserver
         $total = $subtotal - $discount;
         $order->subtotal = $subtotal;
         $order->total = $total;
-        $order->save();
-
-        $product = $order_item->product;
-        $product->update(['stock' => $product->stock - $order_item->quantity]);
-
-        $user = $order->user;
-        $user->update(['revenue' => $user->revenue + $order->total]);
+        if ($order->save()) {
+            $product = $order_item->product;
+            $product->update(['stock' => $product->stock - $order_item->quantity]);
+            UserRevenueUpdateJob::dispatch($order);
+        }
     }
 }

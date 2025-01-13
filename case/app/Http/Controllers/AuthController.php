@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -40,4 +39,13 @@ class AuthController extends Controller
     {
         return $this->auth_service->logout();
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function me(): JsonResponse
+    {
+        return $this->auth_service->me();
+    }
+
 }
