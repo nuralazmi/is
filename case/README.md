@@ -22,9 +22,6 @@
 
 ## Bağlantı Bilgileri
 
-### Youtube Tanıtım
-- https://www.youtube.com/watch?v=EK_Hc3AMyP4
-
 ### Case
 - http://127.0.0.1:8005/
 
